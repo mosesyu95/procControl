@@ -5,30 +5,25 @@ import (
 )
 
 type ProcControl struct {
-	wg      sync.WaitGroup
+	wg      *sync.WaitGroup
 	channel chan int8
 }
 
-func NewProcControl(procNum, totalProc int) *ProcControl {
-	wg := sync.WaitGroup{}
-	wg.Add(totalProc)
+func NewProcControl(procNum int) *ProcControl {
 	return &ProcControl{
-		wg:      wg,
+		wg:      *sync.WaitGroup{},
 		channel: make(chan int8, procNum),
 	}
 }
 
 func (p *ProcControl) Acquire() {
+	p.wg.Add(1)
 	p.channel <- int8(0)
 }
 
 func (p *ProcControl) Release() {
 	p.wg.Done()
 	<-p.channel
-}
-
-func (p *ProcControl) Done() {
-	p.wg.Done()
 }
 
 func (p *ProcControl) Wait() {
