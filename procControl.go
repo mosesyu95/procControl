@@ -11,7 +11,7 @@ type ProcControl struct {
 
 func NewProcControl(procNum int) *ProcControl {
 	return &ProcControl{
-		wg:      *sync.WaitGroup{},
+		wg:      &sync.WaitGroup{},
 		channel: make(chan int8, procNum),
 	}
 }
