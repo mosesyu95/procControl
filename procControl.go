@@ -27,6 +27,10 @@ func (p *ProcControl) Release() {
 	<-p.channel
 }
 
+func (p *ProcControl) Done() {
+	p.wg.Done()
+}
+
 func (p *ProcControl) Wait() {
 	p.wg.Wait()
 }
